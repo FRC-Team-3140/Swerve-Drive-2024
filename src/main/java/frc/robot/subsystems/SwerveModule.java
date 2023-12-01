@@ -20,32 +20,31 @@ public class SwerveModule extends SubsystemBase {
     //One : 0.701239
     //Two: 0.467096
     //Three : 0.207867
-    String moduleID; 
-    int pwmID;
-    int driveMotorID;
-    int turnMotorID;
-    double baseAngle;
-    CANSparkMax turnMotor;
-    CANSparkMax driveMotor;
-    PIDController turnPID;
-    PIDController drivePID;
-    SimpleMotorFeedforward driveFeedforward;
-    AnalogEncoder turnEncoder;
-    RelativeEncoder driveEncoder;
+    public static String moduleID; 
+    public int pwmID;
+    public int driveMotorID;
+    public int turnMotorID;
+    public double baseAngle;
+    public CANSparkMax turnMotor;
+    public CANSparkMax driveMotor;
+    public PIDController turnPID;
+    public PIDController drivePID;
+    public SimpleMotorFeedforward driveFeedforward;
+    public static AnalogEncoder turnEncoder;
+    public RelativeEncoder driveEncoder;
     
-    double P = 0;
-    double I = 0;
-    double D = 0;
+    public double P = 0;
+    public double I = 0;
+    public double D = 0;
 
-    double driveSetpointTolerance;
-    double turnSetpointTolerance;
-    double turnVelocityTolerance;
-    double turnIntegratorRange;
+    public double driveSetpointTolerance;
+    public double turnSetpointTolerance;
+    public double turnVelocityTolerance;
 
-    double conversionFactor = 1.0/19.85; 
-    double maxTurnSpeed; 
-    double maxDriveSpeed;
-     
+    public double conversionFactor = 1.0/19.85; 
+    public double maxTurnSpeed; 
+    public double maxDriveSpeed;
+ 
         //Conversion Factor for the motor encoder output to wheel output
         //(Circumference / Gear Ratio) * Inches to meters conversion
 
@@ -135,6 +134,12 @@ public class SwerveModule extends SubsystemBase {
         return new SwerveModulePosition(distance, new Rotation2d(3.14 * angle / 180));
     }
     
+    public RelativeEncoder getDriveEncoder() {
+        return this.driveEncoder;
+    }
 
+    public AnalogEncoder getTurnEncoder() {
+        return this.turnEncoder;
+    }
 
 }
