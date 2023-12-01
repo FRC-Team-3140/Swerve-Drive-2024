@@ -1,5 +1,8 @@
 package frc.robot.subsystems;
 
+import com.pathplanner.lib.auto.AutoBuilder;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
@@ -9,7 +12,7 @@ import frc.robot.HardwareAdapter;
 
 //Everything in this class is  measured in meters
 public class SwerveDrive extends SubsystemBase implements HardwareAdapter {
-    private final String[] swerveModuleOrder = { "frontLeft",
+    public static String[] swerveModuleOrder = { "frontLeft",
             "frontRight", "backLeft", "backRight" };
     double maxDriveSpeed;
     double maxTurnSpeed;
@@ -25,6 +28,23 @@ public class SwerveDrive extends SubsystemBase implements HardwareAdapter {
             new SwerveModule("backLeft", 2, 6, 5, 0.697409),
             new SwerveModule("backRight", 3, 8, 7, 0.701239),
     };
+
+    public SwerveDrive() {
+        AutoBuilder.configureHolonomic(
+        this::getPose, // Robot pose supplier
+        this::resetPose, // Method to reset odometry (will be called if your auto has a starting pose)
+        this::getRobotRelativeSpeeds, // ChassisSpeeds supplier. MUST BE ROBOT RELATIVE
+        this::driveRobotRelative, // Method that will drive the robot given ROBOT RELATIVE ChassisSpeeds
+        new HolonomicPathFollowerConfig( // HolonomicPathFollowerConfig, this should likely live in your Constants class
+            new PIDConstants(5.0, 0.0, 0.0), // Translation PID constants
+            new PIDConstants(5.0, 0.0, 0.0), // Rotation PID constants
+            4.5, // Max module speed, in m/s
+            0.4, // Drive base radius in meters. Distance from robot center to furthest module.
+            new ReplanningConfig() // Default path replanning config. See the API for the options here
+        ),
+        this // Reference to this subsystem to set requirements
+    );
+    }
 
     public void setChassisSpeeds(double xSpeed, double ySpeed, double rads_per_sec, boolean headless) {
         SwerveModuleState[] states = new SwerveModuleState[4];
@@ -46,4 +66,19 @@ public class SwerveDrive extends SubsystemBase implements HardwareAdapter {
         this.locked = locked;
     }
 
-}
+   
+    private ChassisSpeeds getRobotRelativeSpeeds() {
+        return null;
+    }
+
+    private void driveRobotRelative(ChassisSpeeds chassisspeeds1) {
+    }
+
+    private void resetPose(Pose2d pose2d1) {
+    }
+
+    private Pose2d getPose() {
+                    
+    }
+
+
