@@ -4,6 +4,9 @@
       "Angle": {
         "open": true
       },
+      "FMSInfo": {
+        "open": true
+      },
       "currentAngle": {
         "open": true
       },

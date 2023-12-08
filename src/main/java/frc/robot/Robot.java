@@ -86,11 +86,11 @@ public class Robot extends TimedRobot implements HardwareAdapter {
       m_autonomousCommand.cancel();
     }
   }
-  SwerveDrive swerveDrive = new SwerveDrive();
   /** This function is called periodically during operator control. */
+  SwerveDrive swerveDrive = new SwerveDrive();
   @Override
   public void teleopPeriodic() {
-    swerveDrive.setChassisSpeeds(0,0 , NetworkTableInstance.getDefault().getTable("Angle").getEntry("Angle").getDouble(0), false);
+    swerveDrive.setAngles( NetworkTableInstance.getDefault().getTable("Angle").getEntry("Angle").getDouble(0));
   }
 
   @Override

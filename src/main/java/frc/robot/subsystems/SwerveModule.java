@@ -70,7 +70,7 @@ public class SwerveModule extends SubsystemBase {
         turnEncoder = new AnalogEncoder(analogID);
         driveEncoder = driveMotor.getEncoder();
 
-        turnPID = new PIDController(P, I, D);
+        turnPID = new PIDController(.008, I, D);
         turnPID.enableContinuousInput(0,360);
         turnPID.setTolerance(turnSetpointTolerance, turnVelocityTolerance);
 
@@ -87,19 +87,19 @@ public class SwerveModule extends SubsystemBase {
     double lastD = 0.00;
     @Override
     public void periodic() {
-        NetworkTableInstance.getDefault().getTable("currentAngle").getEntry(moduleID + "angle").setDouble(turnEncoder.getAbsolutePosition());
-        if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP) != lastP){
-            lastP = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP);
-            turnPID.setP(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP));
-        }
-        if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("I").getDouble(lastI) != lastI){
-            lastI = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastI);
-            turnPID.setI(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("I").getDouble(lastI));
-        }
-        if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("D").getDouble(lastD) != lastD){
-            lastD = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP);
-            turnPID.setD(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("D").getDouble(lastD));
-        }
+        // NetworkTableInstance.getDefault().getTable("currentAngle").getEntry(moduleID + "angle").setDouble(turnEncoder.getAbsolutePosition()*360- baseAngle);
+        // if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP) != lastP){
+        //     lastP = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP);
+        //     turnPID.setP(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP));
+        // }
+        // if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("I").getDouble(lastI) != lastI){
+        //     lastI = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastI);
+        //     turnPID.setI(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("I").getDouble(lastI));
+        // }
+        // if(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("D").getDouble(lastD) != lastD){
+        //     lastD = NetworkTableInstance.getDefault().getTable("turnPID").getEntry("P").getDouble(lastP);
+        //     turnPID.setD(NetworkTableInstance.getDefault().getTable("turnPID").getEntry("D").getDouble(lastD));
+        // }
         
     }
 
@@ -107,15 +107,15 @@ public class SwerveModule extends SubsystemBase {
 
         state = new SwerveModuleState(state.speedMetersPerSecond,
                 state.angle.rotateBy(Rotation2d.fromDegrees(baseAngle)));
-        state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(turnEncoder.getAbsolutePosition()));
+        state = SwerveModuleState.optimize(state, Rotation2d.fromDegrees(turnEncoder.getAbsolutePosition()*360));
         setAngle(state.angle.getDegrees());
         setDriveSpeed(state.speedMetersPerSecond);
     }
     
     public void setAngle(double angle) {
         turnPID.setSetpoint(angle);
-        turnMotor.set(-turnPID.calculate(turnEncoder.getAbsolutePosition()));
-        NetworkTableInstance.getDefault().getTable("turnPID").getEntry("Speed").setDouble(turnPID.calculate(turnEncoder.getAbsolutePosition()));
+        turnMotor.set(-turnPID.calculate(turnEncoder.getAbsolutePosition()*360));
+        NetworkTableInstance.getDefault().getTable("turnPID").getEntry(moduleID + "Speed").setDouble(turnPID.calculate(360*turnEncoder.getAbsolutePosition()));
     }
 
     public void setDriveSpeed(double velocity){
@@ -129,7 +129,7 @@ public class SwerveModule extends SubsystemBase {
     }
 
     public SwerveModulePosition getSwerveModulePosition(){
-        double angle = turnEncoder.getAbsolutePosition() - baseAngle;
+        double angle = turnEncoder.getAbsolutePosition()*360 - baseAngle;
         double distance = driveEncoder.getPosition();
         return new SwerveModulePosition(distance, new Rotation2d(3.14 * angle / 180));
     }
