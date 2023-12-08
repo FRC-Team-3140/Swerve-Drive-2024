@@ -45,6 +45,9 @@ public class RobotContainer {
 
     SmartDashboard.putData("Auto Chooser", autoChooser);
 
+    // Added SendableChooser that auto populates with paths created within pathplanner directory. 
+    // - Tyler Krumm
+
     configureBindings();
   }
 
