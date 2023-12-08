@@ -26,9 +26,9 @@ public class Odometry {
     }
 
     public void followSelectedPath() {
-        if (path != null) {
+        /*if (path != null) {
             PathPlannerPath.FollowPathWithEvents()
-        }
+        }*/
     }
 
 }
