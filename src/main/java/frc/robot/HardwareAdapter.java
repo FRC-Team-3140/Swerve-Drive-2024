@@ -12,4 +12,7 @@ public interface HardwareAdapter {
 
     // Replace with CommandPS4Controller or CommandJoystick if needed
     public final XboxController xbox = new XboxController(0);
+
+    //SwerveDrive
+    public final SwerveDrive swerve = new SwerveDrive();
 }

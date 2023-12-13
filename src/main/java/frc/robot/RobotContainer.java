@@ -38,7 +38,7 @@ public class RobotContainer {
     // ... other init + AutoBuilder configuration
 
     // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser();
+    autoChooser = AutoBuilder.buildAutoChooser("ExampleCommand");
 
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
@@ -82,10 +82,11 @@ public class RobotContainer {
    */
   public Command getAutonomousCommand() {
     // An example command will be run in autonomous
-    if (autoChooser.getSelected() != null ) {
-      return autoChooser.getSelected();
-    } else {
-      return Autos.exampleAuto(m_exampleSubsystem);
-    }
+    // if (autoChooser.getSelected() != null ) {
+    //   return autoChooser.getSelected();
+    // } else {
+    //   return Autos.exampleAuto(m_exampleSubsystem);
+    // }
+    return autoChooser.getSelected();
   }
 }
