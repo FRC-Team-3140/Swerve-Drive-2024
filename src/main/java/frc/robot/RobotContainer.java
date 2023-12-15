@@ -4,14 +4,19 @@
 
 package frc.robot;
 
+import frc.robot.commands.Autos;
 import frc.robot.commands.ExampleCommand;
 import frc.robot.subsystems.ExampleSubsystem;
+
+import java.io.File;
+import java.io.FilenameFilter;
 
 import com.pathplanner.lib.auto.AutoBuilder;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -31,14 +36,21 @@ public class RobotContainer {
   /**
    * The container for the robot. Contains subsystems, OI devices, and commands.
    */
-  private final SendableChooser<Command> autoChooser;
+  private SendableChooser<Command> autoChooser;
 
   public RobotContainer() {
     // ... other init + AutoBuilder configuration
+    autoChooser.setDefaultOption("Noting", new InstantCommand());
+  // File dir = new File("/users/blah/dirname");
+  // File[] files = dir.listFiles(new FilenameFilter() {
+  //   public boolean accept(File dir, String name) {
+  //       return name.toLowerCase().contains("path");
+  //     }
+  //   });
 
-    // Build an auto chooser. This will use Commands.none() as the default option.
-    autoChooser = AutoBuilder.buildAutoChooser("ExampleCommand");
-
+  //   for(int i = 0; i < files.length; i++){
+  //     autoChooser.addOption(files[i].getName(), new files[i]);
+  //   }
     // Another option that allows you to specify the default auto by its name
     // autoChooser = AutoBuilder.buildAutoChooser("My Default Auto");
 
