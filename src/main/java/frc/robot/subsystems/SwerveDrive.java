@@ -33,6 +33,8 @@ public class SwerveDrive extends SubsystemBase implements HardwareAdapter {
     };
 
     public SwerveDrive() {
+        Odometry.getGyro().reset();
+
         // Configure the AutoBuilder last
         AutoBuilder.configureHolonomic(
                 this::getPose, // Robot pose supplier

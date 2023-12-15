@@ -18,7 +18,7 @@ import frc.robot.subsystems.SwerveDrive;
  */
 public class Robot extends TimedRobot implements HardwareAdapter {
   private Command m_autonomousCommand;
-
+  HardwareAdapter hardwareAdapter;
   private RobotContainer m_robotContainer;
 
   /**
